@@ -12,7 +12,17 @@ import java.util.regex.Pattern;
 
 public class BuscadorSitiosWeb {
 
-    public static HashSet buscar(String dominio, int cantidadBusquedas) throws Exception {
+    /**
+     *
+     * @param dominio es el dominio a buscar el motor de búsqueda. Por ejemplo
+     * .gob.ar.
+     * @param cantidadBusquedas es la cantidad de dominios que se desean
+     * obtener.
+     * @return un conjunto de objetos SitioWeb. Notar que al ser un conjunto
+     * Hash el orden no está establecido.
+     * @throws Exception
+     */
+    public static HashSet<SitioWeb> buscar(String dominio, int cantidadBusquedas) throws Exception {
         HashSet<String> s = new HashSet();
 
         boolean bandera = true;
@@ -34,9 +44,9 @@ public class BuscadorSitiosWeb {
             pagina += 10;
         }
         HashSet<SitioWeb> sitios = new HashSet();
-        Iterator it = s.iterator();
+        Iterator<String> it = s.iterator();
         while (it.hasNext()) {
-            sitios.add(new SitioWeb((String) it.next()));
+            sitios.add(new SitioWeb(it.next()));
         }
         return sitios;
     }
@@ -51,14 +61,11 @@ public class BuscadorSitiosWeb {
         conn.setRequestProperty("Content-Type", "text/plain;charset=UTF-8");
         conn.setRequestProperty("Accept-Lenguage", "es-AR");
         conn.setRequestProperty("Connection", "close");
-        InputStream res = conn.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(res));
-        while (br.ready()) {
-            respuesta += br.readLine();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+            while (br.ready()) {
+                respuesta += br.readLine();
+            }
         }
-        br.close();
-        res.close();
-
         return respuesta;
     }
 }
