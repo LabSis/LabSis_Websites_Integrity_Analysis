@@ -22,7 +22,7 @@ public class BusquedaPaginas {
         try {
             System.out.println("Buscando paginas esto puede tardar un momento...");
             //VELOCIDAD VARIA SEGUN INTERNET
-            sitios.addAll(BuscadorSitiosWeb.buscar("gob.ar",50));
+            sitios.addAll(BuscadorSitiosWeb.buscar("gob.ar",10));
             Iterator<SitioWeb> it = sitios.iterator();
             while(it.hasNext())
             {
