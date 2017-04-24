@@ -93,9 +93,7 @@ public class AnalizadorSitio {
             if (uri.isAbsolute()) {
                 String hostUri = uri.getHost();
                 String hostUrl = url.getHost();
-                if (hostUri.equals(hostUrl)) {
-                    usaCdn = false;
-                } else {
+                if (!hostUri.equals(hostUrl)) {
                     usaCdn = true;
                 }
             }
