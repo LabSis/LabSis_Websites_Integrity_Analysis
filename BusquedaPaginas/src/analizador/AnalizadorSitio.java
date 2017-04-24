@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 public class AnalizadorSitio {
 
     public static ResultadoSitoWeb ejecutar(URL url) {
+        System.out.println("Por descargar: " + url.toString());
         ResultadoSitoWeb result = null;
         InputStream is = null;
         BufferedReader br;
@@ -30,7 +31,11 @@ public class AnalizadorSitio {
             URLConnection urlConnection = url.openConnection();
             urlConnection.setDoOutput(true);
             urlConnection.setUseCaches(false);
-
+            urlConnection.setRequestProperty("Content-Length", "0");
+            urlConnection.setRequestProperty("Content-Type", "text/plain;charset=UTF-8");
+            urlConnection.setRequestProperty("Accept-Lenguage", "es-AR");
+            urlConnection.setRequestProperty("Connection", "close");
+            urlConnection.setRequestProperty("User-Agent", "Mozila/5.0");
             is = urlConnection.getInputStream();
             br = new BufferedReader(new InputStreamReader(is));
             while ((linea = br.readLine()) != null) {
@@ -39,8 +44,6 @@ public class AnalizadorSitio {
 
             result = analizar(url, html.toString());
 
-        } catch (IOException ex) {
-            Logger.getLogger(AnalizadorSitio.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             System.out.println("Error al descargar la pagina: " + url.toString());
             //ex.printStackTrace();

@@ -5,7 +5,6 @@ import analizador.ResultadoSitoWeb;
 import analizador.ResultadoTag;
 import busquedapaginas.BuscadorSitiosWeb;
 import busquedapaginas.SitioWeb;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -57,6 +56,7 @@ public class AnalizadorDeSitios {
     }
 
     private void analizarResultados(ArrayList<ResultadoSitoWeb> resultado) {
+        int cantidadDePaginas = 0;
         int cantidadTotalTags = 0;
         int cantidadUsanCdn = 0;
         int cantidadVerificanIntegridad = 0;
@@ -66,6 +66,9 @@ public class AnalizadorDeSitios {
             System.out.println("----------------------------");
             System.out.println("Sitio web: " + rsw.getUrl());
             ArrayList<ResultadoTag> resultadosTagSitio = rsw.getResultados();
+            if(resultadosTagSitio.size() > 0){
+                cantidadDePaginas++;
+            }
             for (ResultadoTag tr : resultadosTagSitio) {
                 cantidadTotalTags++;
                 System.out.println("\t" + tr.getTagHtml());
@@ -100,17 +103,18 @@ public class AnalizadorDeSitios {
             }
         }
         System.out.println("#################################");
+        System.out.println("Cantidad de páginas: " + cantidadDePaginas);
         System.out.println("Cantidad de tags: " + cantidadTotalTags);
         System.out.println("Cantidad de tags con CDN: " + cantidadUsanCdn);
         System.out.println("Cantidad de tags que verifican integridad: " + cantidadVerificanIntegridad);
         System.out.println("\tSHA256: " + contadorTipoVerificacion[SHA_256]);
-        System.out.println("\tSHA256: " + contadorTipoVerificacion[SHA_386]);
-        System.out.println("\tSHA256: " + contadorTipoVerificacion[SHA_512]);
+        System.out.println("\tSHA386: " + contadorTipoVerificacion[SHA_386]);
+        System.out.println("\tSHA512: " + contadorTipoVerificacion[SHA_512]);
 
     }
 
     public static void main(String[] args) {
-        AnalizadorDeSitios analizador = new AnalizadorDeSitios("gob.ar", 5);
+        AnalizadorDeSitios analizador = new AnalizadorDeSitios("gob.ar", 25);
         analizador.analizarResultados(analizador.analizarSitios());
 
     }
