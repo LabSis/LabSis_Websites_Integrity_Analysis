@@ -7,7 +7,7 @@ package analizador;
 public class ResultadoTag {
     
     private String tagHtml;
-    private boolean cdn;
+    private boolean utilizaCdn;
     private boolean verificacionIntegridad;
     private TipoVerificacion tipoVerificacion;
 
@@ -19,19 +19,19 @@ public class ResultadoTag {
         this.tagHtml = tagHtml;
     }
     
-    public boolean isCdn() {
-        return cdn;
+    public boolean setUtilizaCdn() {
+        return utilizaCdn;
     }
 
-    public void setCdn(boolean cdn) {
-        this.cdn = cdn;
+    public void getUtilizaCdn(boolean cdn) {
+        this.utilizaCdn = cdn;
     }
 
-    public boolean isVerificacionIntegridad() {
+    public boolean getVerificaIntegridad() {
         return verificacionIntegridad;
     }
 
-    public void setVerificacionIntegridad(boolean verificacionIntegridad) {
+    public void setVerificaIntegridad(boolean verificacionIntegridad) {
         this.verificacionIntegridad = verificacionIntegridad;
     }
 
@@ -43,7 +43,7 @@ public class ResultadoTag {
         this.tipoVerificacion = tipoVerificacion;
     }
 
-    enum TipoVerificacion {
+    public enum TipoVerificacion {
         SHA_256, SHA_386, SHA_512
     }
 }

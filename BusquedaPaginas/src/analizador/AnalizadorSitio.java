@@ -64,7 +64,7 @@ public class AnalizadorSitio {
             Tag.Atributo atrSrc = t.getAtributo("src");
             if (atrSrc != null) {
                 boolean usaCdn = usaCdn(url, atrSrc.getValor());
-                rt.setCdn(usaCdn);
+                rt.getUtilizaCdn(usaCdn);
             }
 
             /* VERIFICACION DE INTEGRIDAD */
@@ -75,7 +75,7 @@ public class AnalizadorSitio {
                 String integrityValue = atrIntegridad.getValor();
                 rt.setTipoVerificacion(tipoVerificacion(integrityValue));
             }
-            rt.setVerificacionIntegridad(verificaIntegridad);
+            rt.setVerificaIntegridad(verificaIntegridad);
 
             resultado.addResultadoPorTag(rt);
         }
