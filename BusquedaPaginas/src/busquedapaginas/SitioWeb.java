@@ -1,5 +1,10 @@
 package busquedapaginas;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class SitioWeb {
 
     private final String dominioMasProtocolo;
@@ -39,6 +44,19 @@ public class SitioWeb {
         this.seguro = seguro;
     }
 
+    public URL getUrl(){
+        URL url = null;
+        String urlStr = "";
+        try {
+            urlStr = this.protocolo + "://" + this.dominio;
+            System.out.println(urlStr);
+            url = new URL(urlStr.trim());
+        } catch (MalformedURLException ex) {
+            System.out.println("Error al formar url: "+urlStr);
+        }
+        return url;
+    }
+    
     @Override
     public String toString() {
         return this.dominioMasProtocolo;

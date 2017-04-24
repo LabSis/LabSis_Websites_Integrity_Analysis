@@ -19,11 +19,11 @@ public class ResultadoTag {
         this.tagHtml = tagHtml;
     }
     
-    public boolean setUtilizaCdn() {
+    public boolean getUtilizaCdn() {
         return utilizaCdn;
     }
 
-    public void getUtilizaCdn(boolean cdn) {
+    public void setUtilizaCdn(boolean cdn) {
         this.utilizaCdn = cdn;
     }
 

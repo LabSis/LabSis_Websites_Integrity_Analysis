@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,8 +25,13 @@ public class AnalizadorSitio {
         BufferedReader br;
         StringBuilder html = new StringBuilder();
         String linea;
+
         try {
-            is = url.openStream();
+            URLConnection urlConnection = url.openConnection();
+            urlConnection.setDoOutput(true);
+            urlConnection.setUseCaches(false);
+
+            is = urlConnection.getInputStream();
             br = new BufferedReader(new InputStreamReader(is));
             while ((linea = br.readLine()) != null) {
                 html.append(linea);
@@ -34,7 +40,10 @@ public class AnalizadorSitio {
             result = analizar(url, html.toString());
 
         } catch (IOException ex) {
-            System.out.printf("URL mal formada: " + url.toString());
+            Logger.getLogger(AnalizadorSitio.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            System.out.println("Error al descargar la pagina: " + url.toString());
+            //ex.printStackTrace();
         } finally {
             try {
                 if (is != null) {
@@ -64,7 +73,7 @@ public class AnalizadorSitio {
             Tag.Atributo atrSrc = t.getAtributo("src");
             if (atrSrc != null) {
                 boolean usaCdn = usaCdn(url, atrSrc.getValor());
-                rt.getUtilizaCdn(usaCdn);
+                rt.setUtilizaCdn(usaCdn);
             }
 
             /* VERIFICACION DE INTEGRIDAD */
@@ -95,10 +104,12 @@ public class AnalizadorSitio {
                 String hostUrl = url.getHost();
                 if (!hostUri.equals(hostUrl)) {
                     usaCdn = true;
+
                 }
             }
         } catch (URISyntaxException ex) {
-            Logger.getLogger(AnalizadorSitio.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AnalizadorSitio.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return usaCdn;
     }
