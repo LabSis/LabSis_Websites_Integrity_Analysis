@@ -46,7 +46,6 @@ public class AnalizadorSitio {
 
         } catch (Exception ex) {
             System.out.println("Error al descargar la pagina: " + url.toString());
-            //ex.printStackTrace();
         } finally {
             try {
                 if (is != null) {
@@ -105,9 +104,14 @@ public class AnalizadorSitio {
             if (uri.isAbsolute()) {
                 String hostUri = uri.getHost();
                 String hostUrl = url.getHost();
+                /* 
+                OJO!! NO contempla el caso en que sea un subdominio.
+                Por ejemplo si en la pagina www.ejemplo.com se incluye un 
+                archivo desde archivos.ejemplo.com lo va a tomar como un CDN y 
+                no es lo correcto
+                */
                 if (!hostUri.equals(hostUrl)) {
                     usaCdn = true;
-
                 }
             }
         } catch (URISyntaxException ex) {

@@ -48,8 +48,7 @@ public class SitioWeb {
         URL url = null;
         String urlStr = "";
         try {
-            urlStr = this.protocolo + "://" + this.dominio;
-            System.out.println(urlStr);
+            urlStr = this.protocolo + "://" + this.dominio;            
             url = new URL(urlStr.trim());
         } catch (MalformedURLException ex) {
             System.out.println("Error al formar url: "+urlStr);

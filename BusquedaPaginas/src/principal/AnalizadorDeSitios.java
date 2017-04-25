@@ -40,7 +40,7 @@ public class AnalizadorDeSitios {
 
                 URL url = sitioWeb.getUrl();
                 if (url == null) {
-                    System.out.println("No se pudo obtener la url.");
+                    System.out.println("No se pudo obtener la url del sitio con dominio: "+sitioWeb.getDominio());
                     continue;
                 }
                 ResultadoSitoWeb resultadoSitio = AnalizadorSitio.ejecutar(url);
@@ -75,7 +75,7 @@ public class AnalizadorDeSitios {
 
                 /* CDN */
                 if (tr.getUtilizaCdn()) {
-                    System.out.println("\tUsa CDN");
+                    System.out.println("\t¡¡¡USA CDN!!!");
                     cantidadUsanCdn++;
                 } else {
                     System.out.println("\tNo usa CDN");
@@ -102,7 +102,7 @@ public class AnalizadorDeSitios {
 
             }
         }
-        System.out.println("#################################");
+        System.out.println("###############RESUMEN################");
         System.out.println("Cantidad de páginas: " + cantidadDePaginas);
         System.out.println("Cantidad de tags: " + cantidadTotalTags);
         System.out.println("Cantidad de tags con CDN: " + cantidadUsanCdn);
@@ -116,7 +116,7 @@ public class AnalizadorDeSitios {
     public static void main(String[] args) {
         AnalizadorDeSitios analizador = new AnalizadorDeSitios("gob.ar", 25);
         analizador.analizarResultados(analizador.analizarSitios());
-
+        
     }
 
 }
