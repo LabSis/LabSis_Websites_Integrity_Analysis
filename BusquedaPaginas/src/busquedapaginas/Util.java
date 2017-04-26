@@ -14,6 +14,7 @@ import java.net.URLConnection;
 public class Util {
     public static String getHtml(String urlStr){
         StringBuilder sb = new StringBuilder();
+        System.out.println("Descargando: \t" + urlStr);
         try {
             URL url = new URL(urlStr);
             URLConnection urlCon = url.openConnection();
@@ -35,7 +36,7 @@ public class Util {
             System.out.println("URL mal formada: " + urlStr);
         } catch (IOException ex) {
             System.out.println("Error al leer " + urlStr);
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }      
         
         return sb.toString();

@@ -4,11 +4,14 @@ import analizador.AnalizadorSitio;
 import analizador.ResultadoSitoWeb;
 import analizador.ResultadoTag;
 import busquedapaginas.BuscadorSitiosWeb;
+import busquedapaginas.GoogleBuscadorSitios;
 import busquedapaginas.SitioWeb;
+import busquedapaginas.Util;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,21 +35,17 @@ public class AnalizadorDeSitios {
 
     private ArrayList<ResultadoSitoWeb> analizarSitios() {
         ArrayList<ResultadoSitoWeb> resultado = new ArrayList<>();
+        GoogleBuscadorSitios buscador = new GoogleBuscadorSitios(this.terminacionDominio, this.cantidadMaximaSitios);
         try {
-            HashSet<SitioWeb> sitiosWeb = BuscadorSitiosWeb.buscar(this.terminacionDominio, this.cantidadMaximaSitios);
-            Iterator<SitioWeb> iterator = sitiosWeb.iterator();
-            while (iterator.hasNext()) {
-                SitioWeb sitioWeb = (SitioWeb) iterator.next();                
+            TreeSet<GoogleBuscadorSitios.Enlace> enlaces = buscador.buscar();
 
-                URL url = sitioWeb.getUrl();
-                if (url == null) {
-                    System.out.println("No se pudo obtener la url del sitio con dominio: "+sitioWeb.getDominio());
-                    continue;
-                }
-                ResultadoSitoWeb resultadoSitio = AnalizadorSitio.ejecutar(url);
-                if(resultadoSitio != null){
+            for (GoogleBuscadorSitios.Enlace enlace : enlaces) {
+
+                ResultadoSitoWeb resultadoSitio = AnalizadorSitio.ejecutar(enlace.getUrl());
+
+                if (resultadoSitio != null) {
                     resultado.add(resultadoSitio);
-                }                                
+                }
             }
 
         } catch (Exception ex) {
@@ -67,7 +66,7 @@ public class AnalizadorDeSitios {
             System.out.println("----------------------------");
             System.out.println("Sitio web: " + rsw.getUrl());
             ArrayList<ResultadoTag> resultadosTagSitio = rsw.getResultados();
-            if(resultadosTagSitio.size() > 0){
+            if (resultadosTagSitio.size() > 0) {
                 cantidadDePaginas++;
             }
             for (ResultadoTag tr : resultadosTagSitio) {
@@ -81,9 +80,9 @@ public class AnalizadorDeSitios {
                 } else {
                     System.out.println("\tNo usa CDN");
                 }
-                
+
                 /* Subdominio */
-                if(tr.estaEnSubdominio()){
+                if (tr.estaEnSubdominio()) {
                     cantidadRecursoEnSubdominio++;
                 }
 
@@ -123,7 +122,7 @@ public class AnalizadorDeSitios {
     public static void main(String[] args) {
         AnalizadorDeSitios analizador = new AnalizadorDeSitios("gob.ar", 25);
         analizador.analizarResultados(analizador.analizarSitios());
-        
+        //Util.getHtml("https://www.google.com.ar/search?q=gob.ar&start=0");
     }
 
 }

@@ -2,7 +2,6 @@ package busquedapaginas;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -31,6 +30,11 @@ public class GoogleBuscadorSitios {
         UrlGoogle google = new UrlGoogle(this.terminacionDominio);
         boolean haySiguientePagina = true;
         while (haySiguientePagina && enlaces.size() <= this.cantidadMaxima) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                
+            }
             String html = Util.getHtml(google.proximaUrl());
             TreeSet<Enlace> links = extraerEnlaces(html);
             
@@ -39,8 +43,9 @@ public class GoogleBuscadorSitios {
             }
             
             haySiguientePagina = haySiguientePagina(html);
+            System.out.print(".");
         }
-
+        System.out.println("");
         return enlaces;
     }
 
@@ -126,5 +131,13 @@ public class GoogleBuscadorSitios {
         }
    
         
+    }
+    
+    public static void main(String[] args){
+        GoogleBuscadorSitios buscador = new GoogleBuscadorSitios("gob.ar", 50);
+        TreeSet<Enlace> buscar = buscador.buscar();
+        for(GoogleBuscadorSitios.Enlace e : buscar){
+            System.out.println(e.getUrl().toString());
+        }
     }
 }
