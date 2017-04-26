@@ -4,8 +4,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,8 +14,8 @@ import org.jsoup.select.Elements;
  * @author fdrcbrtl
  */
 public class GoogleBuscadorSitios {
-    private String terminacionDominio;
-    private int cantidadMaxima;
+    private final String terminacionDominio;
+    private final int cantidadMaxima;
     
     public GoogleBuscadorSitios(String terminacionDominio, int cantidadMaxima){
         this.terminacionDominio = terminacionDominio;
@@ -29,21 +27,22 @@ public class GoogleBuscadorSitios {
 
         UrlGoogle google = new UrlGoogle(this.terminacionDominio);
         boolean haySiguientePagina = true;
+        int numeroPagina = 0;
+        
         while (haySiguientePagina && enlaces.size() <= this.cantidadMaxima) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                
-            }
-            String html = Util.getHtml(google.proximaUrl());
+            String urlStr = google.proximaUrl();
+            numeroPagina++;
+            System.out.println("En página de google N°: " + numeroPagina);
+            
+            String html = Util.getHtml(urlStr);
+            
             TreeSet<Enlace> links = extraerEnlaces(html);
             
             if(!links.isEmpty()){
                 enlaces.addAll(links);
             }
             
-            haySiguientePagina = haySiguientePagina(html);
-            System.out.print(".");
+            haySiguientePagina = haySiguientePagina(html);            
         }
         System.out.println("");
         return enlaces;
@@ -99,7 +98,10 @@ public class GoogleBuscadorSitios {
             String proxUrl = url + "?" + qParam + this.terminacionDominio + "&" + startParam + this.pagina;
             return proxUrl;
         }
-
+        
+        public int getPagina(){
+            return this.pagina;
+        }
     }
     
     public class Enlace implements Comparable<Enlace>{
@@ -117,7 +119,13 @@ public class GoogleBuscadorSitios {
         public int compareTo(Enlace o) {            
             return this.url.getHost().compareTo(o.url.getHost());                
         }
-
+        
+        /**
+         * SOLO COMPARA POR EL HOST ENTERO. NO TIENE EN CUENTA SI HAY UN 
+         * SUB DOMINIO DIFERENTE.
+         * @param obj
+         * @return 
+         */
         @Override
         public boolean equals(Object obj) {          
             return (this.url.getHost().equals(((Enlace)obj).url.getHost()));
@@ -128,16 +136,6 @@ public class GoogleBuscadorSitios {
             int hash = 7;
             hash = 53 * hash + Objects.hashCode(this.url);
             return hash;
-        }
-   
-        
-    }
-    
-    public static void main(String[] args){
-        GoogleBuscadorSitios buscador = new GoogleBuscadorSitios("gob.ar", 50);
-        TreeSet<Enlace> buscar = buscador.buscar();
-        for(GoogleBuscadorSitios.Enlace e : buscar){
-            System.out.println(e.getUrl().toString());
-        }
-    }
+        }           
+    }           
 }

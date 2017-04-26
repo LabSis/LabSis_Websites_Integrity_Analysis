@@ -3,14 +3,8 @@ package principal;
 import analizador.AnalizadorSitio;
 import analizador.ResultadoSitoWeb;
 import analizador.ResultadoTag;
-import busquedapaginas.BuscadorSitiosWeb;
 import busquedapaginas.GoogleBuscadorSitios;
-import busquedapaginas.SitioWeb;
-import busquedapaginas.Util;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -120,9 +114,8 @@ public class AnalizadorDeSitios {
     }
 
     public static void main(String[] args) {
-        AnalizadorDeSitios analizador = new AnalizadorDeSitios("gob.ar", 25);
-        analizador.analizarResultados(analizador.analizarSitios());
-        //Util.getHtml("https://www.google.com.ar/search?q=gob.ar&start=0");
+        AnalizadorDeSitios analizador = new AnalizadorDeSitios("gob.ar", 1500);
+        analizador.analizarResultados(analizador.analizarSitios());        
     }
 
 }
