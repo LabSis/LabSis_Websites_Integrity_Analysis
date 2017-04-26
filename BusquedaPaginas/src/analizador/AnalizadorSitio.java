@@ -53,7 +53,7 @@ public class AnalizadorSitio {
             urlConnection.setRequestProperty("Content-Type", "text/plain;charset=UTF-8");
             urlConnection.setRequestProperty("Accept-Lenguage", "es-AR");
             urlConnection.setRequestProperty("Connection", "close");
-            urlConnection.setRequestProperty("User-Agent", "Mozila/5.0");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36");
             is = urlConnection.getInputStream();
             br = new BufferedReader(new InputStreamReader(is));
             while ((linea = br.readLine()) != null) {
