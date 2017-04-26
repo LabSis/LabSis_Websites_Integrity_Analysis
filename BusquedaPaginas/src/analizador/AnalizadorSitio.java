@@ -127,17 +127,22 @@ public class AnalizadorSitio {
             }
             URI uri = new URI(src);
             if (uri.isAbsolute()) {
-                String hostSitio = uri.getHost();
-                String hostRecurso = url.getHost();
+                String hostRecurso = uri.getHost();
+                String hostSitio = url.getHost();
                 if (hostSitio.equals(hostRecurso)) {
                     usaCdn = false;
                 } else {
                     String[] partesSitio = hostSitio.split("\\.");
                     String[] partesRecurso = hostRecurso.split("\\.");
-                    String dominioPrincipalSitioPrincipal = partesSitio[partesSitio.length - UBICACION_DOMINIO_PRINCIPAL];
-                    String dominioPrincipalRecurso = partesRecurso[partesRecurso.length - UBICACION_DOMINIO_PRINCIPAL];
-                    if (dominioPrincipalSitioPrincipal.equals(dominioPrincipalRecurso)) {
-                        usaCdn = false;
+
+                    if (partesRecurso.length >= UBICACION_DOMINIO_PRINCIPAL) {
+                        String dominioPrincipalSitioPrincipal = partesSitio[partesSitio.length - UBICACION_DOMINIO_PRINCIPAL];
+                        String dominioPrincipalRecurso = partesRecurso[partesRecurso.length - UBICACION_DOMINIO_PRINCIPAL];
+                        if (dominioPrincipalSitioPrincipal.equals(dominioPrincipalRecurso)) {
+                            usaCdn = false;
+                        } else {
+                            usaCdn = true;
+                        }
                     } else {
                         usaCdn = true;
                     }
@@ -158,17 +163,21 @@ public class AnalizadorSitio {
             }
             URI uri = new URI(src);
             if (uri.isAbsolute()) {
-                String hostSitio = uri.getHost();
-                String hostRecurso = url.getHost();
+                String hostRecurso = uri.getHost();
+                String hostSitio = url.getHost();
                 if (hostSitio.equals(hostRecurso)) {
                     subdominio = false;
                 } else {
                     String[] partesSitio = hostSitio.split("\\.");
                     String[] partesRecurso = hostRecurso.split("\\.");
-                    String dominioPrincipalSitioPrincipal = partesSitio[partesSitio.length - UBICACION_DOMINIO_PRINCIPAL];
-                    String dominioPrincipalRecurso = partesRecurso[partesRecurso.length - UBICACION_DOMINIO_PRINCIPAL];
-                    if (dominioPrincipalSitioPrincipal.equals(dominioPrincipalRecurso)) {
-                        subdominio = true;
+                    if (partesRecurso.length >= UBICACION_DOMINIO_PRINCIPAL) {
+                        String dominioPrincipalSitioPrincipal = partesSitio[partesSitio.length - UBICACION_DOMINIO_PRINCIPAL];
+                        String dominioPrincipalRecurso = partesRecurso[partesRecurso.length - UBICACION_DOMINIO_PRINCIPAL];
+                        if (dominioPrincipalSitioPrincipal.equals(dominioPrincipalRecurso)) {
+                            subdominio = true;
+                        } else {
+                            subdominio = false;
+                        }
                     } else {
                         subdominio = false;
                     }
@@ -238,6 +247,12 @@ public class AnalizadorSitio {
         } else {
             System.out.println("Error");
         }
+        
+        if (!estaEnUnSubdominio(new URL("https://www.pabex.com.ar"), "http://google.com/a.js")) {
+            System.out.println("Correcto");
+        } else {
+            System.out.println("Error");
+        }
 
         // CDN
         if (!usaCdn(new URL("https://www.pabex.com.ar"), "http://pabex.com.ar")) {
@@ -277,6 +292,12 @@ public class AnalizadorSitio {
         }
 
         if (usaCdn(new URL("https://www.pabex.com.ar"), "http://www.juan.com.ar/a.js")) {
+            System.out.println("Correcto");
+        } else {
+            System.out.println("Error");
+        }
+
+        if (usaCdn(new URL("https://www.pabex.com.ar"), "http://google.com/a.js")) {
             System.out.println("Correcto");
         } else {
             System.out.println("Error");
