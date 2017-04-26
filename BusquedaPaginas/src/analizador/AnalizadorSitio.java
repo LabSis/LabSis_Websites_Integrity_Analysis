@@ -135,6 +135,9 @@ public class AnalizadorSitio {
                     String[] partesSitio = hostSitio.split("\\.");
                     String[] partesRecurso = hostRecurso.split("\\.");
 
+                    if (partesSitio.length < UBICACION_DOMINIO_PRINCIPAL) {
+                        throw new RuntimeException("Error con la URL del sitio a analizar. Tener en cuenta la constante UBICACION_DOMINIO_PRINCIPAL.");
+                    }
                     if (partesRecurso.length >= UBICACION_DOMINIO_PRINCIPAL) {
                         String dominioPrincipalSitioPrincipal = partesSitio[partesSitio.length - UBICACION_DOMINIO_PRINCIPAL];
                         String dominioPrincipalRecurso = partesRecurso[partesRecurso.length - UBICACION_DOMINIO_PRINCIPAL];
@@ -170,6 +173,9 @@ public class AnalizadorSitio {
                 } else {
                     String[] partesSitio = hostSitio.split("\\.");
                     String[] partesRecurso = hostRecurso.split("\\.");
+                    if (partesSitio.length < UBICACION_DOMINIO_PRINCIPAL) {
+                        throw new RuntimeException("Error con la URL del sitio a analizar. Tener en cuenta la constante UBICACION_DOMINIO_PRINCIPAL.");
+                    }
                     if (partesRecurso.length >= UBICACION_DOMINIO_PRINCIPAL) {
                         String dominioPrincipalSitioPrincipal = partesSitio[partesSitio.length - UBICACION_DOMINIO_PRINCIPAL];
                         String dominioPrincipalRecurso = partesRecurso[partesRecurso.length - UBICACION_DOMINIO_PRINCIPAL];
@@ -247,7 +253,7 @@ public class AnalizadorSitio {
         } else {
             System.out.println("Error");
         }
-        
+
         if (!estaEnUnSubdominio(new URL("https://www.pabex.com.ar"), "http://google.com/a.js")) {
             System.out.println("Correcto");
         } else {
