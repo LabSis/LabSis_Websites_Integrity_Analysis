@@ -36,7 +36,7 @@ public class ResultadoTag {
         this.tagHtml = tagHtml;
     }
 
-    public boolean isSubdominio() {
+    public boolean estaEnSubdominio() {
         return subdominio;
     }
 

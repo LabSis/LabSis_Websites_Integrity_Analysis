@@ -59,6 +59,7 @@ public class AnalizadorDeSitios {
         int cantidadDePaginas = 0;
         int cantidadTotalTags = 0;
         int cantidadUsanCdn = 0;
+        int cantidadRecursoEnSubdominio = 0;
         int cantidadVerificanIntegridad = 0;
         int[] contadorTipoVerificacion = new int[3]; //0:sha256 1:sha386 2:sha512
 
@@ -79,6 +80,11 @@ public class AnalizadorDeSitios {
                     cantidadUsanCdn++;
                 } else {
                     System.out.println("\tNo usa CDN");
+                }
+                
+                /* Subdominio */
+                if(tr.estaEnSubdominio()){
+                    cantidadRecursoEnSubdominio++;
                 }
 
                 /* Verificacion de integridad */
@@ -106,6 +112,7 @@ public class AnalizadorDeSitios {
         System.out.println("Cantidad de páginas: " + cantidadDePaginas);
         System.out.println("Cantidad de tags: " + cantidadTotalTags);
         System.out.println("Cantidad de tags con CDN: " + cantidadUsanCdn);
+        System.out.println("Cantidad de tags en subdominios: " + cantidadRecursoEnSubdominio);
         System.out.println("Cantidad de tags que verifican integridad: " + cantidadVerificanIntegridad);
         System.out.println("\tSHA256: " + contadorTipoVerificacion[SHA_256]);
         System.out.println("\tSHA386: " + contadorTipoVerificacion[SHA_386]);
