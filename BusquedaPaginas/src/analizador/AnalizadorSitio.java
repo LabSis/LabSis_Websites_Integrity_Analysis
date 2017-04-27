@@ -1,14 +1,10 @@
 package analizador;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import busquedapaginas.Util;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,41 +34,11 @@ public class AnalizadorSitio {
     private static final int UBICACION_DOMINIO_PRINCIPAL = 3;
 
     public static ResultadoSitoWeb ejecutar(URL url) {
-        System.out.println("Por descargar: " + url.toString());
-        ResultadoSitoWeb result = null;
-        InputStream is = null;
-        BufferedReader br;
-        StringBuilder html = new StringBuilder();
-        String linea;
+        System.out.println("Por descargar y analizar: " + url.toString());        
 
-        try {
-            URLConnection urlConnection = url.openConnection();
-            urlConnection.setDoOutput(true);
-            urlConnection.setUseCaches(false);
-            urlConnection.setRequestProperty("Content-Length", "0");
-            urlConnection.setRequestProperty("Content-Type", "text/plain;charset=UTF-8");
-            urlConnection.setRequestProperty("Accept-Lenguage", "es-AR");
-            urlConnection.setRequestProperty("Connection", "close");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36");
-            is = urlConnection.getInputStream();
-            br = new BufferedReader(new InputStreamReader(is));
-            while ((linea = br.readLine()) != null) {
-                html.append(linea);
-            }
+        String html = Util.getHtml(url.toString());
+        ResultadoSitoWeb result = analizar(url, html);
 
-            result = analizar(url, html.toString());
-
-        } catch (Exception ex) {
-            System.out.println("Error al descargar la pagina: " + url.toString());
-        } finally {
-            try {
-                if (is != null) {
-                    is.close();
-                }
-            } catch (IOException ex) {
-
-            }
-        }
         return result;
     }
 
