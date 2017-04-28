@@ -12,6 +12,7 @@ import java.util.Iterator;
  *
  * @author 
  */
+@Deprecated
 public class BusquedaPaginas {
 
     /**
