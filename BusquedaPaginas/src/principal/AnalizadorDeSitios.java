@@ -25,7 +25,7 @@ public class AnalizadorDeSitios {
     private final int HTTP = 0;
     private final int MIXED_CONTENT = 1;
     private final int HTTPS = 2;
-    
+
     public AnalizadorDeSitios(String terminacionDominio, int cantidadMaximaSitios) {
         this.terminacionDominio = terminacionDominio;
         this.cantidadMaximaSitios = cantidadMaximaSitios;
@@ -61,21 +61,21 @@ public class AnalizadorDeSitios {
         int[] contadorTipoVerificacion = new int[3]; //0:sha256 1:sha386 2:sha512
         int[] contadorClasificacionSitiosWeb = new int[3];
         int cantidadTagsSegurosConCdn = 0;
-        
+
         for (ResultadoSitoWeb rsw : resultado) {
             System.out.println("----------------------------");
             System.out.println("Sitio web: " + rsw.getUrl());
-            
+
             ArrayList<ResultadoTag> resultadosTagSitio = rsw.getResultados();
             if (resultadosTagSitio.size() > 0) {
                 cantidadDePaginas++;
-            }else{
+            } else {
                 continue;
             }
-            
+
             /* Clasificacion HTTP - MIXED_CONTENT - HTTPS*/
             ResultadoSitoWeb.ClasificacionSitioWeb clasificacion = rsw.getClasificacionSitioWeb();
-            switch(clasificacion){
+            switch (clasificacion) {
                 case HTTP:
                     contadorClasificacionSitiosWeb[HTTP]++;
                     System.out.println("\tClasificación: HTTP");
@@ -89,7 +89,7 @@ public class AnalizadorDeSitios {
                     System.out.println("\tClasificación: MIXED_CONTENT");
                     break;
             }
-            
+
             /* Por cada etiqueta */
             for (ResultadoTag tr : resultadosTagSitio) {
                 cantidadTotalTags++;
@@ -128,11 +128,13 @@ public class AnalizadorDeSitios {
                 }
 
                 /* Si la etiqueta es segura cuando utiliza CDN */
-                if(tr.getUtilizaCdn()){
+                if (tr.getUtilizaCdn()) {
                     boolean tagSeguro = tr.esSegura(rsw.getUrl());
-                    if(tagSeguro) cantidadTagsSegurosConCdn++;
+                    if (tagSeguro) {
+                        cantidadTagsSegurosConCdn++;
+                    }
                 }
-                
+
             }
         }
         System.out.println("###############RESUMEN################");
@@ -150,13 +152,17 @@ public class AnalizadorDeSitios {
         System.out.println("\tMIXED_CONTENT: " + contadorClasificacionSitiosWeb[MIXED_CONTENT]);
         System.out.println("\tHTTPS: " + contadorClasificacionSitiosWeb[HTTPS]);
         System.out.println("");
-        System.out.println("Tags seguros que utilizan cdn: " + cantidadTagsSegurosConCdn +" ("+((cantidadTagsSegurosConCdn/cantidadUsanCdn)*100)+"%)");
+        if (cantidadUsanCdn != 0) {
+            System.out.println("Tags seguros que utilizan cdn: " + cantidadTagsSegurosConCdn + " (" + ((cantidadTagsSegurosConCdn / cantidadUsanCdn) * 100) + "%)");
+        } else {
+            System.out.println("Tags seguros que utilizan cdn: " + cantidadTagsSegurosConCdn + " (0%)");
+        }
 
     }
 
     public static void main(String[] args) {
-        AnalizadorDeSitios analizador = new AnalizadorDeSitios("com.ar", 10);
-        analizador.analizarResultados(analizador.analizarSitios());        
+        AnalizadorDeSitios analizador = new AnalizadorDeSitios("com.ar", 99999);
+        analizador.analizarResultados(analizador.analizarSitios());
     }
 
 }

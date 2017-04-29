@@ -13,20 +13,24 @@ import org.jsoup.select.Elements;
  */
 public abstract class ObtenedorTags {
 
-    public ArrayList<Tag> obtenerTags(String html){
+    public ArrayList<Tag> obtenerTags(String html) {
         ArrayList<Tag> listaTags = new ArrayList<>();
-        Document document = Jsoup.parse(html);
-        Elements tags = document.getElementsByTag(getNombreTag());
-        for (Element t : tags) {
-            Tag tag = new Tag(getNombreTag());
-            for(Attribute a : t.attributes()){
-                tag.addAtributo(a.getKey(), a.getValue());
+        try {
+            Document document = Jsoup.parse(html);
+            Elements tags = document.getElementsByTag(getNombreTag());
+            for (Element t : tags) {
+                Tag tag = new Tag(getNombreTag());
+                for (Attribute a : t.attributes()) {
+                    tag.addAtributo(a.getKey(), a.getValue());
+                }
+                tag.setTagHtml(t.toString());
+                listaTags.add(tag);
             }
-            tag.setTagHtml(t.toString());
-            listaTags.add(tag);
+        } catch (IllegalArgumentException ex) {
+            
         }
         return listaTags;
     }
-    
+
     public abstract String getNombreTag();
 }
