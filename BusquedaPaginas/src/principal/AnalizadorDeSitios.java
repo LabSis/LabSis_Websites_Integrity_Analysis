@@ -3,7 +3,7 @@ package principal;
 import analizador.AnalizadorSitio;
 import analizador.ResultadoSitoWeb;
 import analizador.ResultadoTag;
-import busquedapaginas.GoogleBuscadorSitios;
+import busquedapaginas.BuscadorSitios;
 import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -33,11 +33,11 @@ public class AnalizadorDeSitios {
 
     private ArrayList<ResultadoSitoWeb> analizarSitios() {
         ArrayList<ResultadoSitoWeb> resultado = new ArrayList<>();
-        GoogleBuscadorSitios buscador = new GoogleBuscadorSitios(this.terminacionDominio, this.cantidadMaximaSitios);
+        BuscadorSitios buscador = new BuscadorSitios(this.terminacionDominio, this.cantidadMaximaSitios);
         try {
-            TreeSet<GoogleBuscadorSitios.Enlace> enlaces = buscador.buscar();
+            TreeSet<BuscadorSitios.Enlace> enlaces = buscador.buscar();
 
-            for (GoogleBuscadorSitios.Enlace enlace : enlaces) {
+            for (BuscadorSitios.Enlace enlace : enlaces) {
 
                 ResultadoSitoWeb resultadoSitio = AnalizadorSitio.ejecutar(enlace.getUrl());
 
@@ -161,7 +161,7 @@ public class AnalizadorDeSitios {
     }
 
     public static void main(String[] args) {
-        AnalizadorDeSitios analizador = new AnalizadorDeSitios("com.ar", 99999);
+        AnalizadorDeSitios analizador = new AnalizadorDeSitios("gob.ar", 200);
         analizador.analizarResultados(analizador.analizarSitios());
     }
 

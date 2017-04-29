@@ -27,7 +27,7 @@ public abstract class ObtenedorTags {
                 listaTags.add(tag);
             }
         } catch (IllegalArgumentException ex) {
-            
+            System.out.println(ex.getMessage());
         }
         return listaTags;
     }
