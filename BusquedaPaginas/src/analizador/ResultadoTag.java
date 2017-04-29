@@ -1,5 +1,7 @@
 package analizador;
 
+import java.net.URL;
+
 /**
  *
  * @author fdrcbrtl
@@ -27,7 +29,11 @@ public class ResultadoTag {
      * Esta variable indica el tipo de integridad en caso que se realice.
      */
     private TipoVerificacion tipoVerificacion;
-
+    /**
+     * String con la url del cdn si es que utiliza.
+     */
+    private String cdn = "";
+    
     public String getTagHtml() {
         return tagHtml;
     }
@@ -68,6 +74,21 @@ public class ResultadoTag {
         this.tipoVerificacion = tipoVerificacion;
     }
 
+    public String getCdn() {
+        return cdn;
+    }
+
+    public void setCdn(String cdn) {
+        this.cdn = cdn;
+    }
+    
+    public boolean esSegura(URL urlPadre){               
+        boolean https = (urlPadre.getProtocol().equalsIgnoreCase("https"));
+        boolean cdnHttps = (this.cdn.startsWith("https"));        
+        
+        return https && cdnHttps && this.verificacionIntegridad;
+    }
+    
     public enum TipoVerificacion {
         SHA_256, SHA_386, SHA_512
     }

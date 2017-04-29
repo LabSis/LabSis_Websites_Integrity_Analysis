@@ -41,7 +41,7 @@ public class AnalizadorSitio {
 
         return result;
     }
-
+    
     private static ResultadoSitoWeb analizar(URL url, String html) {
         ResultadoSitoWeb resultado = new ResultadoSitoWeb(url);
 
@@ -60,7 +60,12 @@ public class AnalizadorSitio {
             if (atrSrc != null) {
                 boolean usaCdn = usaCdn(url, atrSrc.getValor());
                 rt.setUtilizaCdn(usaCdn);
-                rt.setSubdominio(estaEnUnSubdominio(url, atrSrc.getValor()));
+                boolean estaEnSubdominio = estaEnUnSubdominio(url, atrSrc.getValor()); 
+                rt.setSubdominio(estaEnSubdominio);
+                
+                if(usaCdn || estaEnSubdominio){
+                    rt.setCdn(atrSrc.getValor());
+                }
             }
 
             /* VERIFICACION DE INTEGRIDAD */

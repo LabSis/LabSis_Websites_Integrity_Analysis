@@ -32,4 +32,38 @@ public class ResultadoSitoWeb {
     public ArrayList<ResultadoTag> getResultados(){
         return this.resultadosTags;
     }
+    
+    public ClasificacionSitioWeb getClasificacionSitioWeb(){
+        ClasificacionSitioWeb clasificacion = null;
+        
+        String protocolo = url.getProtocol();
+        
+        if(protocolo.equalsIgnoreCase("http")){
+            clasificacion = ClasificacionSitioWeb.HTTP;
+        }else if (protocolo.equalsIgnoreCase("https")){
+            
+            boolean hayCdnHttp = false;
+            
+            for(ResultadoTag rt : this.resultadosTags){
+                String cdn = rt.getCdn();
+                if(cdn != null && !cdn.equals("")){
+                    if(cdn.trim().startsWith("http://")){
+                        hayCdnHttp = true;
+                        break;
+                    }
+                }
+            }
+            if(hayCdnHttp){
+                clasificacion = ClasificacionSitioWeb.MIXED_CONTENT;
+            }else{
+                clasificacion = ClasificacionSitioWeb.HTTPS;
+            }
+        }
+        
+        return clasificacion;
+    }
+    
+    public enum ClasificacionSitioWeb{
+        HTTP,MIXED_CONTENT,HTTPS
+    }
 }
