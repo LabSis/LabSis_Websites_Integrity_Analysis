@@ -2,6 +2,8 @@ package analizador;
 
 import java.net.URL;
 import java.util.ArrayList;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -61,6 +63,21 @@ public class ResultadoSitoWeb {
         }
         
         return clasificacion;
+    }
+    
+    public JSONObject getJson(){
+        JSONObject resultadoJson = new JSONObject();
+        
+        JSONArray resultadosTagJson = new JSONArray();
+        for(ResultadoTag rt : this.resultadosTags){
+            resultadosTagJson.add(rt.getJson());
+        }
+        resultadoJson.put("resultadosTags", resultadosTagJson);
+        resultadoJson.put("url", this.url.toString());
+        ClasificacionSitioWeb clasificacionSitioWeb = this.getClasificacionSitioWeb();
+        resultadoJson.put("clasificacion", (clasificacionSitioWeb != null)?clasificacionSitioWeb.toString():null);
+        
+        return resultadoJson;
     }
     
     public enum ClasificacionSitioWeb{

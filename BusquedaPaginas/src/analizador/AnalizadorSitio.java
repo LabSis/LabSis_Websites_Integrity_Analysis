@@ -34,14 +34,14 @@ public class AnalizadorSitio {
     private static final int UBICACION_DOMINIO_PRINCIPAL = 3;
 
     public static ResultadoSitoWeb ejecutar(URL url) {
-        System.out.println("Por descargar y analizar: " + url.toString());        
+        System.out.println("Por descargar y analizar: " + url.toString());
 
         String html = Util.getHtml(url.toString());
         ResultadoSitoWeb result = analizar(url, html);
 
         return result;
     }
-    
+
     private static ResultadoSitoWeb analizar(URL url, String html) {
         ResultadoSitoWeb resultado = new ResultadoSitoWeb(url);
 
@@ -60,10 +60,10 @@ public class AnalizadorSitio {
             if (atrSrc != null) {
                 boolean usaCdn = usaCdn(url, atrSrc.getValor());
                 rt.setUtilizaCdn(usaCdn);
-                boolean estaEnSubdominio = estaEnUnSubdominio(url, atrSrc.getValor()); 
+                boolean estaEnSubdominio = estaEnUnSubdominio(url, atrSrc.getValor());
                 rt.setSubdominio(estaEnSubdominio);
-                
-                if(usaCdn || estaEnSubdominio){
+
+                if (usaCdn || estaEnSubdominio) {
                     rt.setCdn(atrSrc.getValor());
                 }
             }
@@ -178,10 +178,7 @@ public class AnalizadorSitio {
         return null;
     }
 
-    /**
-     * TESTS
-     */
-    public static void main(String args[]) throws MalformedURLException {
+    public void tests() throws MalformedURLException {
         // Subdominios
         if (estaEnUnSubdominio(new URL("https://www.pabex.com.ar"), "http://pabex.com.ar")) {
             System.out.println("Correcto");
@@ -278,6 +275,25 @@ public class AnalizadorSitio {
             System.out.println("Correcto");
         } else {
             System.out.println("Error");
+        }
+    }
+
+    public static void main(String args[]) {
+
+        if (args.length > 0) {
+            URL url;
+            try {
+                url = new URL(args[0]);
+            } catch (MalformedURLException exc) {
+                System.out.println("ERROR");
+                return;
+            }
+
+            String html = Util.getHtml(url.toString());
+            ResultadoSitoWeb resultado = AnalizadorSitio.analizar(url, html);
+            System.out.println(resultado.getJson().toJSONString());
+        }else{
+            System.out.println("ERROR");
         }
     }
 }

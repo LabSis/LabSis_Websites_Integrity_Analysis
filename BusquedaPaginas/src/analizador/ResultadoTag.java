@@ -1,6 +1,7 @@
 package analizador;
 
 import java.net.URL;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -91,5 +92,15 @@ public class ResultadoTag {
     
     public enum TipoVerificacion {
         SHA_256, SHA_386, SHA_512
+    }
+    
+    public JSONObject getJson(){
+        JSONObject resultadoJson = new JSONObject();
+        resultadoJson.put("tag", this.tagHtml);        
+        resultadoJson.put("usaCdn", this.utilizaCdn);
+        resultadoJson.put("cnd", this.cdn);
+        resultadoJson.put("verificaIntegridad", this.verificacionIntegridad);
+        resultadoJson.put("tipoVerificacion", (this.tipoVerificacion != null)? this.tipoVerificacion.toString(): null);        
+        return resultadoJson;
     }
 }
