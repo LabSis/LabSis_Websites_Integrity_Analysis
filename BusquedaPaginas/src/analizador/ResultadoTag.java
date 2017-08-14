@@ -98,7 +98,7 @@ public class ResultadoTag {
         JSONObject resultadoJson = new JSONObject();
         resultadoJson.put("tag", this.tagHtml);        
         resultadoJson.put("usaCdn", this.utilizaCdn);
-        resultadoJson.put("cnd", this.cdn);
+        resultadoJson.put("cdn", this.cdn);
         resultadoJson.put("verificaIntegridad", this.verificacionIntegridad);
         resultadoJson.put("tipoVerificacion", (this.tipoVerificacion != null)? this.tipoVerificacion.toString(): null);        
         return resultadoJson;
